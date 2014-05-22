@@ -31,7 +31,7 @@ Example:
 
 Restoring Data From a Dump
 --------------------------
-'''cat output.cql | cqlsh my_new_server.local'''
+```cat output.cql | cqlsh my_new_server.local```
 
 
 Notes
@@ -43,6 +43,7 @@ Requirements
 -------------
 What made this project so simple is the great work behind the python *cassandra-driver* by
 *datastax*. We require the betta version to be installed:
+
 ```pip install cassandra-driver==2.0.0b1```
 
 
