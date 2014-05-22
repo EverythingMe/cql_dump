@@ -5,7 +5,7 @@ Extract a CQL dump from cassandra
 
 Intro
 -----
-`cql_dump` is a CLI utility for creating full or partial dumps
+*cql_dump* is a CLI utility for creating full or partial dumps
 of cassandra column families (tables), such that the dump is
 a sequence of valid CQL 'INSERT' statements, and hence can be
 restored by piping through cqlsh (like the output of pg_dump can be
@@ -36,7 +36,7 @@ Restoring Data From a Dump
 
 Notes
 -----
-cql_dump was inspired by: https://github.com/data-axle/cassandra_backup
+*cql_dump* was inspired by: https://github.com/data-axle/cassandra_backup
 
 
 Requirements
@@ -50,3 +50,5 @@ Todo
 ----
 * Support cql authentication
 * Support very large dumps
+* Support installation via pip
+
