@@ -31,7 +31,7 @@ Example:
 
 Restoring Data From a Dump
 --------------------------
-cat output.cql | cqlsh my_new_server.local
+'''cat output.cql | cqlsh my_new_server.local'''
 
 
 Notes
