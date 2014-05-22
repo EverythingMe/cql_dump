@@ -3,6 +3,7 @@
 import argparse
 import logging
 import cassandra.cluster
+from cassandra.encoder import cql_encode_all_types
 
 def main():
     parser = argparse.ArgumentParser(description='Dump cassandra data in cql format.')
@@ -22,16 +23,29 @@ def main():
 
     session.set_keyspace(args.keyspace)
 
-    rows = session.execute('SELECT * FROM %s', (args.column_family))
+    session.row_factory = make_row_factory(args.keyspace, args.column_family)
+    session.default_fetch_size = 5
 
-    print rows
+    rows = session.execute("SELECT * FROM %s" % (args.column_family,))
+
+    for r in rows:
+        print r+';'
 
 
-
+def make_row_factory(keyspace, column_family):
+    def _factory(colnames, rows):
+        columns = '"'+'", "'.join(colnames)+'"'
+        for r in rows:
+            r = map(cql_encode_all_types, r)
+            values = ', '.join(r)
+            yield "INSERT INTO %s.%s (%s) VALUES (%s)" % (keyspace, column_family, columns, values)
+    
+    return _factory
+    
 
 
 def setup_session(args):
-    cluster = cassandra.cluster.Cluster(['54.85.130.35'], port=9160)
+    cluster = cassandra.cluster.Cluster(['54.85.130.35'])
     session = cluster.connect()
     
     return session
