@@ -19,11 +19,14 @@ Usecases:
 Dumping Data:
 -------------
 Usage:
+
 ```cql_dump.py [-h] [-d] [-H HOSTS] [-p PORT]
 	   [-L LIMIT] [-t TIMEOUT] [-W WHERE]
        keyspace column_family```
+
 Example:
 ```cql_dump.py -H my_server.local -L 500 my_keyspace my_column_family > output.cql```
+
 
 Restoring Data From a Dump
 --------------------------
