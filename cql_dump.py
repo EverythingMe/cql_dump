@@ -9,7 +9,14 @@ def main():
     parser = argparse.ArgumentParser(description='Dump cassandra data in cql format.')
     parser.add_argument('keyspace')
     parser.add_argument('column_family')
-    parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
+    parser.add_argument('-d', '--debug',   help='enable debug output', action='store_true')
+    parser.add_argument('-H', '--hosts',   help='comma-separated list of hosts in the cluster')
+    parser.add_argument('-p', '--port',    help='Cassandra CQL native transport port', default=9042)
+    parser.add_argument('-L', '--limit',   help='Add a LIMIT to the select query', type=int, default=10000)
+    parser.add_argument('-t', '--timeout', help='Query timeout in seconds', type=int, default=10)
+    parser.add_argument('-W', '--where',   help='WHERE clause (without the WHERE)', default=None)
+
+
 
     args = parser.parse_args()
 
@@ -19,14 +26,22 @@ def main():
         logging.getLogger().setLevel(logging.INFO)
     
 
-    session = setup_session(args)
-
+    session                    = setup_session(args)    
+    session.row_factory        = make_row_factory(args.keyspace, args.column_family)
+    session.default_fetch_size = 5
+    session.default_timeout    = args.timeout
     session.set_keyspace(args.keyspace)
 
-    session.row_factory = make_row_factory(args.keyspace, args.column_family)
-    session.default_fetch_size = 5
+    # Format query..
+    query = "SELECT * FROM %s" % (args.column_family,)
+    if args.where is not None:
+        query = query + " WHERE " + args.where
 
-    rows = session.execute("SELECT * FROM %s" % (args.column_family,))
+    query = query + " LIMIT %d" % args.limit
+    #
+
+    logging.debug("Executing query: %s", query)
+    rows = session.execute(query)
 
     for r in rows:
         print r+';'
@@ -45,7 +60,8 @@ def make_row_factory(keyspace, column_family):
 
 
 def setup_session(args):
-    cluster = cassandra.cluster.Cluster(['54.85.130.35'])
+    hosts = map(str.strip, args.hosts.split(','))
+    cluster = cassandra.cluster.Cluster(hosts, port=args.port)
     session = cluster.connect()
     
     return session
