@@ -1,7 +1,12 @@
 #!/usr/bin/env python
-"""cql_dump is a CLI utility for creating dumps cassandra databases
+"""
+cql_dump is a CLI utility for creating full or partial dumps
+of cassandra column families (tables), such that the dump is
+a sequence of valid CQL 'INSERT' statemets.
 
-It is meant to work similarly to mysqldump and pg_dump.
+Such dump can be restored by piping through cqlsh
+
+This is somewhat similar to the plain SQL output by mysqldump and pg_dump.
 """
 import argparse
 import logging
