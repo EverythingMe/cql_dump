@@ -44,7 +44,10 @@ Requirements
 What made this project so simple is the great work behind the python *cassandra-driver* by
 *datastax*. We require the betta version to be installed:
 
-```pip install cassandra-driver==2.0.0b1```
+(```sudo pip install cassandra-driver==2.0.0b1```)
+
+Untill our bug fix pull request(s) are accepted upstream, use this:
+```sudo pip install git+git://github.com/EverythingMe/python-driver.git```
 
 
 Todo
