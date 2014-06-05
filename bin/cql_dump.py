@@ -8,6 +8,7 @@ Such dump can be restored by piping through cqlsh
 
 This is somewhat similar to the plain SQL output by mysqldump and pg_dump.
 """
+import sys
 import argparse
 import logging
 import cassandra.cluster
@@ -83,7 +84,9 @@ def prepare_query(column_family, where_clause, limit):
 def output_results(result_rows):
     """Output the results to STDOUT"""
     for row in result_rows:
-        print(row + ';')
+        bytes = (row+';').encode('utf-8')
+        sys.stdout.write(bytes)
+        
 
 
 if __name__ == '__main__':
