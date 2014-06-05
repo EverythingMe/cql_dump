@@ -3,7 +3,7 @@ setup(
     name = 'cql_dump',
     version = '0.1',
     install_requires = ['cassandra-driver>=2.0.1'],
-    packages = ['cql_dump'],
+    scripts = ['bin/cql_dump.py'],
     description = 'A CLI utility for creating dumps of cassandra databases',
     url = 'https://github.com/EverythingMe/cql_dump',
     author = 'Timor Raiman',
