@@ -62,7 +62,7 @@ def make_row_factory(keyspace, column_family):
     def _factory(colnames, rows):
         columns = ', '.join('"%s"' % col for col in colnames)
         for row in rows:
-            values = ', '.join(cql_encode_all_types(val) for val in row)
+            values = ', '.join(cql_encode_all_types(val).decode('utf-8') for val in row)
             yield "INSERT INTO %s.%s (%s) VALUES (%s)" % (
                 keyspace, column_family, columns, values)
     
