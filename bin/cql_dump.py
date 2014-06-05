@@ -84,7 +84,7 @@ def prepare_query(column_family, where_clause, limit):
 def output_results(result_rows):
     """Output the results to STDOUT"""
     for row in result_rows:
-        bytes = (row+';').encode('utf-8')
+        bytes = (row+';\n').encode('utf-8')
         sys.stdout.write(bytes)
         
 
